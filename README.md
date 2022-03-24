@@ -24,7 +24,11 @@ support "build"、"start" command
 ##   --ignore <path>          provide igonre transfrom files
 ##   --src <path>             source directory, default is src
 ##   --out <path>             output directory, default is esm
-##    -ts, --typescript,      is typescript project
+##   -ts, --typescript,       is typescript project
+##   --scope-style            whether apply scope style
+##   --alias                  handle alias in scripts/styles file
+##   --alias-config <path>    provide alias config file path, default is process.cwd()/alias.config.js
+##   --define                 handle define in scripts file
 
 esm-project build
 ```
@@ -38,7 +42,11 @@ esm-project build
 ##   --ignore <path>          provide igonre transfrom files
 ##   --src <path>             source directory, default is src
 ##   --out <path>             output directory, default is esm
-##    -ts, --typescript,      is typescript project
+##   -ts, --typescript,       is typescript project
+##   --scope-style            whether apply scope style
+##   --alias                  handle alias in scripts/styles file
+##   --alias-config <path>    provide alias config file path, default is process.cwd()/alias.config.js
+##   --define                 handle define in scripts file
 
 esm-project start
 ```
