@@ -14,7 +14,7 @@ const StyleScoped = {};
 module.exports = {
   buildJs(babelConfig) {
     const buildOptions = fs.existsSync(buildOptionsFile) ? require(buildOptionsFile) : {};
-    if (!buildOptions.scopeStyle || !buildOptions.alias || !buildOptions.define) return;
+    if (!buildOptions.scopeStyle && !buildOptions.alias && !buildOptions.define) return;
 
     const rootDir = buildOptions.root
       ? path.resolve(process.cwd(), buildOptions.root)
@@ -42,6 +42,10 @@ module.exports = {
         return;
       }
       if (presetName.includes(path.join('rainbow-core', 'preset'))) {
+        presetScopeStyleIndex = index;
+        return;
+      }
+      if (presetName.includes(path.join('react-vue-like', 'preset'))) {
         presetScopeStyleIndex = index;
         return;
       }
@@ -150,7 +154,7 @@ module.exports = {
   },
   buildPostcss(postcssPlugins) {
     const buildOptions = fs.existsSync(buildOptionsFile) ? require(buildOptionsFile) : {};
-    if (!buildOptions.scopeStyle || !buildOptions.alias) return;
+    if (!buildOptions.scopeStyle && !buildOptions.alias) return;
 
     const postcssPkg = require('postcss/package.json');
     const isPostcss8 = Number(postcssPkg.version[0]) >= 8;
