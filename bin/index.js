@@ -9,5 +9,6 @@ start(execCommand, {
     command.option('--alias', 'handle alias in scripts/styles file');
     command.option('--alias-config <path>', 'provide alias config file path, default is process.cwd()/alias.config.js');
     command.option('--define', 'handle define in scripts file');
+    command.option('--define-config <path>', 'provide define config file path');
   }
 });

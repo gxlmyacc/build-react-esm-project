@@ -4,6 +4,11 @@ const { resolveAlias } = require('babel-plugin-alias-config');
 
 const buildOptionsFile = path.resolve(__dirname, '../cache/_build-options.json');
 
+const _toString = Object.prototype.toString;
+function isPlainObject(obj) {
+  return _toString.call(obj) === '[object Object]';
+}
+
 const StyleScoped = {};
 
 module.exports = {
@@ -115,16 +120,32 @@ module.exports = {
 
     if (buildOptions.define) {
       if (pluginDefineIndex >= 0) return;
+
       const env = process.env || {};
-      const define = {};
+      let define = {};
       Object.keys(env).forEach(key => {
         if (!/^[A-Z0-9_]+$/.test(key)) return;
         define[`process.env.${key}`] = env[key];
       });
-      babelConfig.plugins.push([
-        require.resolve('babel-plugin-define-variables'),
-        { define }
-      ]);
+
+      const defineConfigFile = buildOptions.defineConfig
+        ? path.resolve(rootDir, buildOptions.defineConfig)
+        : '';
+      let customDefineConfig;
+      if (defineConfigFile && fs.existsSync(defineConfigFile)) {
+        customDefineConfig = require(defineConfigFile);
+        if (typeof customDefineConfig === 'function') {
+          customDefineConfig = customDefineConfig(define, buildOptions);
+        }
+        if (customDefineConfig && isPlainObject(customDefineConfig)) define = customDefineConfig;
+      }
+
+      if (customDefineConfig !== false) {
+        babelConfig.plugins.push([
+          require.resolve('babel-plugin-define-variables'),
+          { define }
+        ]);
+      }
     }
   },
   buildPostcss(postcssPlugins) {

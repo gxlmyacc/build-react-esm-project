@@ -1,6 +1,6 @@
 {
   "name": "build-react-esm-project",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "a react build command that transform js/jsx/images/scss with babel/postcss",
   "scripts": {
   },

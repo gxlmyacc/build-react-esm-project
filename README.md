@@ -12,7 +12,7 @@ a react build command that will transform js/jsx/images/scss/less with gulp-babe
 
 ## Usage
 
-support "build"、"start" command
+support "build"、"start" command:
 
 "build" command:
 ```bash
@@ -29,8 +29,9 @@ support "build"、"start" command
 ##   --alias                  handle alias in scripts/styles file
 ##   --alias-config <path>    provide alias config file path, default is process.cwd()/alias.config.js
 ##   --define                 handle define in scripts file
+##   --define-config <path>   provide define config file path
 
-esm-project build
+react-esm-project build
 ```
 "start" command:
 ```bash
@@ -47,8 +48,9 @@ esm-project build
 ##   --alias                  handle alias in scripts/styles file
 ##   --alias-config <path>    provide alias config file path, default is process.cwd()/alias.config.js
 ##   --define                 handle define in scripts file
+##   --define-config <path>   provide define config file path
 
-esm-project start
+react-esm-project start
 ```
 
 you also can config the `esm-project.config.js` to custom do something:
