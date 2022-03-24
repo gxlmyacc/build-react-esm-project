@@ -12,5 +12,6 @@ demo-out/
 plugin/
 esm/
 .history/
+.cache/_build-options.json
 
 

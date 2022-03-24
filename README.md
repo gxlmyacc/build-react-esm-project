@@ -1,13 +1,13 @@
-# esm-project-project
+# build-react-esm-project
 
-a build command that will transform js/jsx/images/scss/less with gulp-babel/postcss/scss/less plugin.
+a react build command that will transform js/jsx/images/scss/less with gulp-babel/postcss/scss/less plugin.
 
 ## Installtion
 
 ```bash
-  npm install --save-dev esm-project-project
+  npm install --save-dev build-react-esm-project
   // or 
-  yarn add -D esm-project-project
+  yarn add -D build-react-esm-project
 ```
 
 ## Usage

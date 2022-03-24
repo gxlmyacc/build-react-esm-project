@@ -1373,6 +1373,13 @@ babel-plugin-alias-config@^0.0.14:
     lodash.template "^4.5.0"
     require-json5 "^1.1.0"
 
+babel-plugin-define-variables@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.npmjs.org/babel-plugin-define-variables/-/babel-plugin-define-variables-0.0.3.tgz#6c53bc39bcd87ed4675fe63ddd9a23143e9d3f21"
+  integrity sha512-+6EJ+7ur9XNvcX3WKg7+Jot1y2fUKQ4VckqvVgF4ZtsW+y+5e/ttLbg5A215OiAsI8UUHcGXZpiAEbDnp/VF4w==
+  dependencies:
+    hash-sum "^2.0.0"
+
 babel-plugin-dynamic-import-node@^2.3.3:
   version "2.3.3"
   resolved "http://npm.dc.servyou-it.com/babel-plugin-dynamic-import-node/-/babel-plugin-dynamic-import-node-2.3.3.tgz#84fda19c976ec5c6defef57f9427b3def66e17a3"
@@ -3064,6 +3071,11 @@ has@^1.0.3:
   integrity sha512-f2dvO0VU6Oej7RkWJGrehjbzMAjFp5/VKPp5tTpWIV4JHHZK1/BxbFRtf/siA2SWTe09caDmVtYYzWEIbBS4zw==
   dependencies:
     function-bind "^1.1.1"
+
+hash-sum@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/hash-sum/-/hash-sum-2.0.0.tgz#81d01bb5de8ea4a214ad5d6ead1b523460b0b45a"
+  integrity sha512-WdZTbAByD+pHfl/g9QSsBIIwy8IT+EsPiKDs0KNX+zSHhdDLFKdZu0BQHljvO+0QI/BasbMSUa8wYNCZTvhslg==
 
 homedir-polyfill@^1.0.1:
   version "1.0.3"

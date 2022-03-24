@@ -1,22 +1,23 @@
 const path = require('path');
+const fs = require('fs');
 const { resolveAlias } = require('babel-plugin-alias-config');
-const pkg = require('./package.json');
-const options = require('./options');
+
+const buildOptionsFile = path.resolve(__dirname, '../cache/_build-options.json');
 
 const StyleScoped = {};
 
 module.exports = {
   buildJs(babelConfig) {
-    if (!options.scopeStyle || !options.alias) return;
+    const buildOptions = fs.existsSync(buildOptionsFile) ? require(buildOptionsFile) : {};
+    if (!buildOptions.scopeStyle || !buildOptions.alias || !buildOptions.define) return;
 
-    const rootDir = options.root
-      ? path.resolve(process.cwd(), options.root)
+    const rootDir = buildOptions.root
+      ? path.resolve(process.cwd(), buildOptions.root)
       : process.cwd();
 
-    let babelEnvIndex = -1;
-    let scopeStyleIndex = -1;
-    let babelReactIndex = -1;
-    let babelAliasIndex = -1;
+    let presetEnvIndex = -1;
+    let presetScopeStyleIndex = -1;
+    let presetReactIndex = -1;
     babelConfig.presets.forEach((preset, index) => {
       let presetOptions;
       if (Array.isArray(preset)) {
@@ -28,28 +29,44 @@ module.exports = {
       } else return;
       let presetName = preset.toLowerCase();
       if (presetName.includes(path.join('@babel', 'preset-env'))) {
-        babelEnvIndex = index;
+        presetEnvIndex = index;
         return;
       }
       if (presetName.includes(path.join('@babel', 'preset-react'))) {
-        babelReactIndex = index;
+        presetReactIndex = index;
         return;
       }
       if (presetName.includes(path.join('rainbow-core', 'preset'))) {
-        scopeStyleIndex = index;
+        presetScopeStyleIndex = index;
         return;
       }
       if (presetName.includes('babel-preset-react-scope-style')) {
-        scopeStyleIndex = index;
+        presetScopeStyleIndex = index;
+      }
+    });
+    let pluginAliasIndex = -1;
+    let pluginDefineIndex = -1;
+    babelConfig.plugins.forEach((plugin, index) => {
+      let pluginOptions;
+      if (Array.isArray(plugin)) {
+        pluginOptions = plugin[1];
+        plugin = plugin[0];
+      } else if (typeof plugin === 'string') {
+        pluginOptions = {};
+        babelConfig.plugins[index] = [plugin, pluginOptions];
+      } else return;
+      let pluginName = plugin.toLowerCase();
+      if (pluginName.includes('babel-plugin-alias-config')) {
+        pluginAliasIndex = index;
         return;
       }
-      if (presetName.includes('babel-plugin-alias-config')) {
-        babelAliasIndex = index;
+      if (pluginName.includes('babel-plugin-define-variables')) {
+        pluginDefineIndex = index;
       }
     });
 
-    if (options.scopeStyle) {
-      if (babelEnvIndex < 0 || babelReactIndex < 0) {
+    if (buildOptions.scopeStyle) {
+      if (presetEnvIndex < 0 || presetReactIndex < 0) {
         throw new Error('[build-react-esm-project] not find [@babel/preset-env] or [@babel/preset-react]!');
       }
       const scopeStylePresetPath = require.resolve('babel-preset-react-scope-style');
@@ -72,59 +89,52 @@ module.exports = {
           return '.css'/* + p2 */;
         }
       };
-      if (scopeStyleIndex >= 0) {
-        const oldOptions = babelConfig.presets[scopeStyleIndex][1] || {};
+      if (presetScopeStyleIndex >= 0) {
+        const oldOptions = babelConfig.presets[presetScopeStyleIndex][1] || {};
         const scopeNamespace = oldOptions.scopeNamespace || scopeStyleOptions.scopeNamespace;
         Object.assign(oldOptions, scopeStyleOptions, { scopeNamespace });
       } else {
-        scopeStyleIndex = babelEnvIndex >= 0
-          ? babelEnvIndex + 1
-          : Math.max(babelReactIndex - 1, 0);
-        babelConfig.presets.splice(scopeStyleIndex, 0, [scopeStylePresetPath, scopeStyleOptions]);
+        presetScopeStyleIndex = presetEnvIndex >= 0
+          ? presetEnvIndex + 1
+          : Math.max(presetReactIndex - 1, 0);
+        babelConfig.presets.splice(presetScopeStyleIndex, 0, [scopeStylePresetPath, scopeStyleOptions]);
       }
-
-      babelConfig.presets.splice(1, 0, [
-        require.resolve('babel-preset-react-scope-style'),
-        {
-          scopeNamespace: pkg.namespace || '',
-          scope(p1, p2, scoped) {
-            let filename = scoped.filename.replace(/\.(js|jsx)$/, '.css');
-            if (scoped.global && scoped.source) {
-              let source = scoped.source.split('?')[0];
-              if (!source.startsWith('.')) {
-                source = resolveAlias(scoped.filename, source, { findConfig: true, noOutputExtension: true });
-              }
-              if (!source.endsWith('.css')) source = source.replace(/\.(scss|less)$/, '.css');
-              filename = path.resolve(path.dirname(filename), source);
-            }
-            if (!StyleScoped[filename] || !StyleScoped[filename].scopeId) {
-              StyleScoped[filename] = { scopeId: scoped.scopeId, global: Boolean(scoped.global) };
-            }
-            return '.css'/* + p2 */;
-          },
-        },
-      ]);
     }
 
-    if (options.alias) {
-      if (babelAliasIndex >= 0) return;
+    if (buildOptions.alias) {
+      if (pluginAliasIndex >= 0) return;
       babelConfig.plugins.push([
         require.resolve('babel-plugin-alias-config'),
         {
           findConfig: true,
           noOutputExtension: true,
-          config: options.aliasConfig
+          config: buildOptions.aliasConfig
         }
+      ]);
+    }
+
+    if (buildOptions.define) {
+      if (pluginDefineIndex >= 0) return;
+      const env = process.env || {};
+      const define = {};
+      Object.keys(env).forEach(key => {
+        if (!/^[A-Z0-9_]+$/.test(key)) return;
+        define[`process.env.${key}`] = env[key];
+      });
+      babelConfig.plugins.push([
+        require.resolve('babel-plugin-define-variables'),
+        { define }
       ]);
     }
   },
   buildPostcss(postcssPlugins) {
-    if (!options.scopeStyle || !options.alias) return;
+    const buildOptions = fs.existsSync(buildOptionsFile) ? require(buildOptionsFile) : {};
+    if (!buildOptions.scopeStyle || !buildOptions.alias) return;
 
     const postcssPkg = require('postcss/package.json');
     const isPostcss8 = Number(postcssPkg.version[0]) >= 8;
 
-    if (options.scopeStyle) {
+    if (buildOptions.scopeStyle) {
       postcssPlugins.push(require(`babel-preset-react-scope-style/postcss${isPostcss8 ? '/postcss8' : ''}`)(root => {
         const filename = root.source.input.file;
         const scoped = StyleScoped[filename];
@@ -137,9 +147,9 @@ module.exports = {
       }));
     }
 
-    if (options.alias) {
+    if (buildOptions.alias) {
       postcssPlugins.push(require(`postcss-alias-config/lib${isPostcss8 ? '/postcss8' : ''}`)({
-        config: options.aliasConfig
+        config: buildOptions.aliasConfig
       }));
     }
   },

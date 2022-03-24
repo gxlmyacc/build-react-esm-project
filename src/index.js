@@ -5,7 +5,9 @@ function execCommand(name, options = {}) {
   const esmExecCommand = require('build-esm-project').execCommand;
   const mergeEsmConfig = require('build-esm-project').mergeEsmConfig;
 
-  Object.assign(require('./options'), options);
+  const buildOptionsFile = path.resolve(__dirname, '../cache/_build-options.json');
+  if (fs.existsSync(buildOptionsFile)) fs.rmSync(buildOptionsFile);
+  fs.writeFileSync(buildOptionsFile, JSON.stringify(options));
 
   const rootDir = options.root
     ? path.resolve(process.cwd(), options.root)
