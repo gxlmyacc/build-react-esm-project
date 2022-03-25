@@ -1,6 +1,6 @@
 # build-react-esm-project
 
-a react build command that will transform js/jsx/images/scss/less with gulp-babel/postcss/scss/less plugin.
+a react build command that will transform js/jsx/images/scss/less with gulp-babel/postcss/scss/less plugin. see [demo](https://github.com/gxlmyacc/build-react-esm-project/tree/master/demo)
 
 ## Installtion
 
