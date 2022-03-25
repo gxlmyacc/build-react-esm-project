@@ -25,7 +25,9 @@ support "build"、"start" command:
 ##   --src <path>             source directory, default is src
 ##   --out <path>             output directory, default is esm
 ##   -ts, --typescript,       is typescript project
+##    --sourcemap             generate scripts`s sourcemap
 ##   --scope-style            whether apply scope style
+##   --scope-namespace <namespace> scope namespace, default is process.cwd()/package.json:namespace
 ##   --alias                  handle alias in scripts/styles file
 ##   --alias-config <path>    provide alias config file path, default is process.cwd()/alias.config.js
 ##   --define                 handle define in scripts file
@@ -44,7 +46,9 @@ react-esm-project build
 ##   --src <path>             source directory, default is src
 ##   --out <path>             output directory, default is esm
 ##   -ts, --typescript,       is typescript project
+##    --sourcemap             generate scripts`s sourcemap
 ##   --scope-style            whether apply scope style
+##   --scope-namespace <namespace> scope namespace, default is process.cwd()/package.json:namespace
 ##   --alias                  handle alias in scripts/styles file
 ##   --alias-config <path>    provide alias config file path, default is process.cwd()/alias.config.js
 ##   --define                 handle define in scripts file

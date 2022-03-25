@@ -6,6 +6,7 @@ const execCommand = require('../src/index').execCommand;
 start(execCommand, {
   command(commandName, command, commandOptions) {
     command.option('--scope-style', 'whether apply scope style');
+    command.option('--scope-namespace <namespace>', 'scope namespace, default is process.cwd()/package.json:namespace');
     command.option('--alias', 'handle alias in scripts/styles file');
     command.option('--alias-config <path>', 'provide alias config file path, default is process.cwd()/alias.config.js');
     command.option('--define', 'handle define in scripts file');

@@ -1,20 +1,13 @@
 const fs = require('fs');
-const path = require('path');
+const { parseOptions } = require('build-esm-project/src/config/utils');
 
 function execCommand(name, options = {}) {
   const esmExecCommand = require('build-esm-project').execCommand;
   const mergeEsmConfig = require('build-esm-project').mergeEsmConfig;
 
-  const buildOptionsFile = path.resolve(__dirname, '../cache/_build-options.json');
-  if (fs.existsSync(buildOptionsFile)) fs.rmSync(buildOptionsFile);
-  fs.writeFileSync(buildOptionsFile, JSON.stringify(options));
-
-  const rootDir = options.root
-    ? path.resolve(process.cwd(), options.root)
-    : process.cwd();
-  const esmConfigFile = options.esmConfig
-    ? path.resolve(rootDir, options.esmConfig)
-    : path.resolve(rootDir, './esm-project.config.js');
+  const {
+    esmConfigFile
+  } = parseOptions(options);
 
   const reactEsmConfigFile = require.resolve('./esm-project.config');
   const reactEsmConfig = require(reactEsmConfigFile);

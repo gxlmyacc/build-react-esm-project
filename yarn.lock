@@ -1562,10 +1562,10 @@ buffer-from@^1.0.0:
   resolved "http://npm.dc.servyou-it.com/buffer-from/-/buffer-from-1.1.2.tgz#2b146a6fd72e80b4f55d255f35ed59a3a9a41bd5"
   integrity sha1-KxRqb9cugLT1XSVfNe1Zo6mkG9U=
 
-build-esm-project@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.npmjs.org/build-esm-project/-/build-esm-project-0.0.6.tgz#8048cd89a6ac64611703133af31e1ae73886ad00"
-  integrity sha512-b8oQGe/W2rlcasjXI2Eri4BaAUPSyrYwDx2r90zJrervlK3pWFQWBrq3kZJj4sGyKV/9gLU57ADy9lHdnUHl4w==
+build-esm-project@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.npmjs.org/build-esm-project/-/build-esm-project-0.0.7.tgz#39f6041c02de63391158b13d9b34bfde9973ff3f"
+  integrity sha512-vLrJGK0aiHpi0hmQlbXgQNeVwlqGupAsqW8P4B6GWh/FsyuLRAfx5+2RLA/wyB955dKe4sN83pyzeoGD6FAG1w==
   dependencies:
     chalk "^4.1.2"
     commander "^8.3.0"

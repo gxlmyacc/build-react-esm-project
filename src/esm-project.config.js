@@ -2,7 +2,6 @@ const path = require('path');
 const fs = require('fs');
 const { resolveAlias } = require('babel-plugin-alias-config');
 
-const buildOptionsFile = path.resolve(__dirname, '../cache/_build-options.json');
 
 const _toString = Object.prototype.toString;
 function isPlainObject(obj) {
@@ -11,14 +10,10 @@ function isPlainObject(obj) {
 
 const StyleScoped = {};
 
+/** @type {import('build-esm-project/types').EsmConfig<import('../types').ReactBuildOptions>}  */
 module.exports = {
-  buildJs(babelConfig) {
-    const buildOptions = fs.existsSync(buildOptionsFile) ? require(buildOptionsFile) : {};
-    if (!buildOptions.scopeStyle && !buildOptions.alias && !buildOptions.define) return;
-
-    const rootDir = buildOptions.root
-      ? path.resolve(process.cwd(), buildOptions.root)
-      : process.cwd();
+  buildJs(buildConfig, babelConfig, options) {
+    const rootDir = options.rootDir;
 
     let presetEnvIndex = -1;
     let presetScopeStyleIndex = -1;
@@ -74,14 +69,14 @@ module.exports = {
       }
     });
 
-    if (buildOptions.scopeStyle) {
+    if (buildConfig.scopeStyle) {
       if (presetEnvIndex < 0 || presetReactIndex < 0) {
         throw new Error('[build-react-esm-project] not find [@babel/preset-env] or [@babel/preset-react]!');
       }
       const scopeStylePresetPath = require.resolve('babel-preset-react-scope-style');
       const projectPkg = require(path.resolve(rootDir, 'package.json'));
       let scopeStyleOptions = {
-        scopeNamespace: projectPkg.namespace || '',
+        scopeNamespace: buildConfig.scopeNamespace || projectPkg.namespace || '',
         scope(p1, p2, scoped) {
           let filename = scoped.filename.replace(/\.(js|jsx)$/, '.css');
           if (scoped.global && scoped.source) {
@@ -110,19 +105,19 @@ module.exports = {
       }
     }
 
-    if (buildOptions.alias) {
+    if (buildConfig.alias) {
       if (pluginAliasIndex >= 0) return;
       babelConfig.plugins.push([
         require.resolve('babel-plugin-alias-config'),
         {
           findConfig: true,
           noOutputExtension: true,
-          config: buildOptions.aliasConfig
+          config: buildConfig.aliasConfig
         }
       ]);
     }
 
-    if (buildOptions.define) {
+    if (buildConfig.define) {
       if (pluginDefineIndex >= 0) return;
 
       const env = process.env || {};
@@ -132,14 +127,14 @@ module.exports = {
         define[`process.env.${key}`] = env[key];
       });
 
-      const defineConfigFile = buildOptions.defineConfig
-        ? path.resolve(rootDir, buildOptions.defineConfig)
+      const defineConfigFile = buildConfig.defineConfig
+        ? path.resolve(rootDir, buildConfig.defineConfig)
         : '';
       let customDefineConfig;
       if (defineConfigFile && fs.existsSync(defineConfigFile)) {
         customDefineConfig = require(defineConfigFile);
         if (typeof customDefineConfig === 'function') {
-          customDefineConfig = customDefineConfig(define, buildOptions);
+          customDefineConfig = customDefineConfig(define, buildConfig);
         }
         if (customDefineConfig && isPlainObject(customDefineConfig)) define = customDefineConfig;
       }
@@ -152,14 +147,13 @@ module.exports = {
       }
     }
   },
-  buildPostcss(postcssPlugins) {
-    const buildOptions = fs.existsSync(buildOptionsFile) ? require(buildOptionsFile) : {};
-    if (!buildOptions.scopeStyle && !buildOptions.alias) return;
+  buildPostcss(buildConfig, postcssPlugins) {
+    if (!buildConfig.scopeStyle && !buildConfig.alias) return;
 
     const postcssPkg = require('postcss/package.json');
     const isPostcss8 = Number(postcssPkg.version[0]) >= 8;
 
-    if (buildOptions.scopeStyle) {
+    if (buildConfig.scopeStyle) {
       postcssPlugins.push(require(`babel-preset-react-scope-style/postcss${isPostcss8 ? '/postcss8' : ''}`)(root => {
         const filename = root.source.input.file;
         const scoped = StyleScoped[filename];
@@ -172,9 +166,9 @@ module.exports = {
       }));
     }
 
-    if (buildOptions.alias) {
+    if (buildConfig.alias) {
       postcssPlugins.push(require(`postcss-alias-config/lib${isPostcss8 ? '/postcss8' : ''}`)({
-        config: buildOptions.aliasConfig
+        config: buildConfig.aliasConfig
       }));
     }
   },
