@@ -69,7 +69,7 @@ react-esm-project start
 ### define
 
 `--alias` will enable ` handle define in scripts file`, see [babel-plugin-define-variables](https://github.com/gxlmyacc/babel-plugin-define-variables)
-### configuration
+## configuration
 
 you also can config the `esm-project.config.js` to custom do something:
 ```js
