@@ -47,7 +47,7 @@ react-esm-project build
 ##   --out <path>             output directory, default is esm
 ##   -ts, --typescript,       is typescript project
 ##    --sourcemap             generate scripts`s sourcemap
-##   --scope-style            whether apply scope style
+##   --scope-style            whether apply scope style 
 ##   --scope-namespace <namespace> scope namespace, default is process.cwd()/package.json:namespace
 ##   --alias                  handle alias in scripts/styles file
 ##   --alias-config <path>    provide alias config file path, default is process.cwd()/alias.config.js
@@ -56,6 +56,19 @@ react-esm-project build
 
 react-esm-project start
 ```
+
+### scope-style
+
+`--scope-style` will enable `scope style`, see [babel-preset-react-scope-style](https://github.com/gxlmyacc/babel-preset-react-scope-style)
+
+### alias
+  
+`--alias` will enable `handle aliases in scripts/styles file`, see [babel-plugin-alias-config](https://github.com/gxlmyacc/babel-plugin-alias-config) and [postcss-alias-config](https://github.com/gxlmyacc/postcss-alias-config)
+
+### define
+
+`--alias` will enable ` handle define in scripts file`, see [babel-plugin-define-variables](https://github.com/gxlmyacc/babel-plugin-define-variables)
+### configuration
 
 you also can config the `esm-project.config.js` to custom do something:
 ```js
