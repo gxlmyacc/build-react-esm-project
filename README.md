@@ -98,7 +98,7 @@ module.exports = {
 }
 ```
 
-`esm-project.config.js`中的参数定义如下：
+The following is the type definition of `esm-project.config.js`:
 ```ts
 interface BuildOptions {
    root?: string,
