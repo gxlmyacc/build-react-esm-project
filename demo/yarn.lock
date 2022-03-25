@@ -1635,13 +1635,14 @@ build-esm-project@^0.0.7:
     sass "^1.49.9"
     update-notifier "^5.1.0"
 
-build-react-esm-project@^0.0.6:
-  version "0.0.6"
-  resolved "http://npm.dc.servyou-it.com/build-react-esm-project/-/build-react-esm-project-0.0.6.tgz#0353b20be85825b4226ade068fa8bdd52d1fde0e"
-  integrity sha512-2Tc3gNiEZUwohSqZwTnrMBZY9Kb4Nw3IXa7+BgPKaTsdhevUfYojwXp5ZadjpROzkLcPwgxQW2NU+dn7hPVv3A==
+build-react-esm-project@^0.0.7:
+  version "0.0.7"
+  resolved "http://npm.dc.servyou-it.com/build-react-esm-project/-/build-react-esm-project-0.0.7.tgz#0a24225e0086a96cc8b49723c25a851450ddaadd"
+  integrity sha512-gj2qokGLtrorqBXHka5woSnSa+NuApWitaf53mZhLjtvJBDb2z5Je3VXJzEt3NcsRBTO1/hrRkYZAVTcOpd5KQ==
   dependencies:
     babel-plugin-alias-config "^0.0.14"
     babel-plugin-define-variables "^0.0.3"
+    babel-preset-react-scope-style "^0.0.9"
     build-esm-project "^0.0.7"
     postcss-alias-config "^0.0.1"
 
