@@ -1,5 +1,6 @@
 {
   "name": "build-react-esm-project-demo",
+  "namespace": "demo",
   "version": "0.0.1",
   "description": "build-react-esm-project demo",
   "scripts": {
