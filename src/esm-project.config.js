@@ -28,19 +28,19 @@ module.exports = {
         babelConfig.presets[index] = [preset, presetOptions];
       } else return;
       let presetName = preset.toLowerCase();
-      if (presetName.includes(path.join('@babel', 'preset-env'))) {
+      if (presetName.includes(path.join('@babel', 'preset-env')) || presetName.includes('@babel/preset-env')) {
         presetEnvIndex = index;
         return;
       }
-      if (presetName.includes(path.join('@babel', 'preset-react'))) {
+      if (presetName.includes(path.join('@babel', 'preset-react')) || presetName.includes('@babel/preset-react')) {
         presetReactIndex = index;
         return;
       }
-      if (presetName.includes(path.join('rainbow-core', 'preset'))) {
+      if (presetName.includes(path.join('rainbow-core', 'preset')) || presetName.includes('rainbow-core/preset')) {
         presetScopeStyleIndex = index;
         return;
       }
-      if (presetName.includes(path.join('react-vue-like', 'preset'))) {
+      if (presetName.includes(path.join('react-vue-like', 'preset')) || presetName.includes('react-vue-like/preset')) {
         presetScopeStyleIndex = index;
         return;
       }
