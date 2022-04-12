@@ -18,6 +18,7 @@ module.exports = {
     let presetEnvIndex = -1;
     let presetScopeStyleIndex = -1;
     let presetReactIndex = -1;
+    let isReactVueLike = false;
     babelConfig.presets.forEach((preset, index) => {
       let presetOptions;
       if (Array.isArray(preset)) {
@@ -37,11 +38,13 @@ module.exports = {
         return;
       }
       if (presetName.includes(path.join('rainbow-core', 'preset')) || presetName.includes('rainbow-core/preset')) {
+        isReactVueLike = true;
         presetScopeStyleIndex = index;
         return;
       }
       if (presetName.includes(path.join('react-vue-like', 'preset')) || presetName.includes('react-vue-like/preset')) {
         presetScopeStyleIndex = index;
+        isReactVueLike = true;
         return;
       }
       if (presetName.includes('babel-preset-react-scope-style')) {
@@ -94,7 +97,11 @@ module.exports = {
         }
       };
       if (presetScopeStyleIndex >= 0) {
-        const oldOptions = babelConfig.presets[presetScopeStyleIndex][1] || {};
+        let oldOptions = babelConfig.presets[presetScopeStyleIndex][1] || {};
+        if (isReactVueLike) {
+          if (!oldOptions.inject) oldOptions.inject = {};
+          oldOptions = oldOptions.inject;
+        }
         const scopeNamespace = oldOptions.scopeNamespace || scopeStyleOptions.scopeNamespace;
         Object.assign(oldOptions, scopeStyleOptions, { scopeNamespace });
       } else {
