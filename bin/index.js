@@ -11,5 +11,7 @@ start(execCommand, {
     command.option('--alias-config <path>', 'provide alias config file path, default is process.cwd()/alias.config.js');
     command.option('--define', 'handle define in scripts file');
     command.option('--define-config <path>', 'provide define config file path');
+    command.option('--rainbow', 'is rainbow component');
+    command.option('--vuelike', 'is vuelike component');
   }
 });

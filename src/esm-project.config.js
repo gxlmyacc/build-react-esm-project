@@ -76,7 +76,6 @@ module.exports = {
       if (presetEnvIndex < 0 || presetReactIndex < 0) {
         throw new Error('[build-react-esm-project] not find [@babel/preset-env] or [@babel/preset-react]!');
       }
-      const scopeStylePresetPath = require.resolve('babel-preset-react-scope-style');
       const projectPkg = require(path.resolve(rootDir, 'package.json'));
       let scopeStyleOptions = {
         scopeNamespace: buildConfig.scopeNamespace || projectPkg.namespace || '',
@@ -108,6 +107,16 @@ module.exports = {
         presetScopeStyleIndex = presetEnvIndex >= 0
           ? presetEnvIndex + 1
           : Math.max(presetReactIndex - 1, 0);
+        let scopeStylePresetPath;
+        if (buildConfig.rainbow) {
+          scopeStylePresetPath = require.resolve('rainbow-core/preset');
+          scopeStyleOptions = { inject: scopeStyleOptions };
+        } else if (buildConfig.vuelike) {
+          scopeStylePresetPath = require.resolve('react-vue-like/preset');
+          scopeStyleOptions = { inject: scopeStyleOptions };
+        } else {
+          scopeStylePresetPath = require.resolve('babel-preset-react-scope-style');
+        }
         babelConfig.presets.splice(presetScopeStyleIndex, 0, [scopeStylePresetPath, scopeStyleOptions]);
       }
     }
