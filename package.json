@@ -1,6 +1,6 @@
 {
   "name": "build-react-esm-project",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "a react build command that transform js/jsx/images/scss with babel/postcss",
   "scripts": {
   },
@@ -24,7 +24,7 @@
     "babel-plugin-alias-config": "^0.0.14",
     "babel-plugin-define-variables": "^0.0.3",
     "babel-preset-react-scope-style": "^0.0.9",
-    "build-esm-project": "^0.0.8",
+    "build-esm-project": "^0.0.9",
     "postcss-alias-config": "^0.0.1"
   },
   "peerDependencies": {
