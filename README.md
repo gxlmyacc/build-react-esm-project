@@ -53,8 +53,10 @@ react-esm-project build
 ##   --out <path>             output directory, default is esm
 ##   -ts, --typescript,       is typescript project
 ##    --sourcemap             generate scripts`s sourcemap
+##    --disable-clean         whether disable clean dist files
 ##
 ##   --scope-style            enable scope style for scripts/styles files. 
+##   --scope-style-version    whether apply scope style with version. 
 ##   --scope-namespace <namespace> scope namespace, default is "namespace" field in process.cwd()/package.json
 ##   --alias                  handle alias in scripts/styles file
 ##   --alias-config <path>    provide alias config file path, default is process.cwd()/alias.config.js
@@ -63,6 +65,7 @@ react-esm-project build
 
 react-esm-project start
 ```
+\
 
 ### scope-style
 

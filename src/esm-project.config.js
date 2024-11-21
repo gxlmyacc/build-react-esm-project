@@ -72,53 +72,53 @@ module.exports = {
       }
     });
 
-    if (buildConfig.scopeStyle) {
-      if (presetEnvIndex < 0 || presetReactIndex < 0) {
-        throw new Error('[build-react-esm-project] not find [@babel/preset-env] or [@babel/preset-react]!');
+    if (presetEnvIndex < 0 || presetReactIndex < 0) {
+      throw new Error('[build-react-esm-project] not find [@babel/preset-env] or [@babel/preset-react]!');
+    }
+    const projectPkg = require(path.resolve(rootDir, 'package.json'));
+    let scopeStyleOptions = {
+      scopeVersion: Boolean(options.scopeStyleVersion),
+      scopeNamespace: buildConfig.scopeNamespace || projectPkg.namespace || '',
+      scope: Boolean(buildConfig.scopeStyle),
+      scopeFn(p1, p2, scoped) {
+        let filename = scoped.filename.replace(/\.(js|jsx)$/, '.css');
+        if (scoped.global && scoped.source) {
+          let source = scoped.source.split('?')[0];
+          if (!source.startsWith('.')) {
+            source = resolveAlias(scoped.filename, source, { findConfig: true, noOutputExtension: true });
+          }
+          if (!source.endsWith('.css')) source = source.replace(/\.(scss|less)$/, '.css');
+          filename = path.resolve(path.dirname(filename), source);
+        }
+        if (!StyleScoped[filename] || !StyleScoped[filename].scopeId) {
+          StyleScoped[filename] = { scopeId: scoped.scopeId, global: Boolean(scoped.global) };
+        }
+        return '.css'/* + p2 */;
       }
-      const projectPkg = require(path.resolve(rootDir, 'package.json'));
-      let scopeStyleOptions = {
-        scopeNamespace: buildConfig.scopeNamespace || projectPkg.namespace || '',
-        scope(p1, p2, scoped) {
-          let filename = scoped.filename.replace(/\.(js|jsx)$/, '.css');
-          if (scoped.global && scoped.source) {
-            let source = scoped.source.split('?')[0];
-            if (!source.startsWith('.')) {
-              source = resolveAlias(scoped.filename, source, { findConfig: true, noOutputExtension: true });
-            }
-            if (!source.endsWith('.css')) source = source.replace(/\.(scss|less)$/, '.css');
-            filename = path.resolve(path.dirname(filename), source);
-          }
-          if (!StyleScoped[filename] || !StyleScoped[filename].scopeId) {
-            StyleScoped[filename] = { scopeId: scoped.scopeId, global: Boolean(scoped.global) };
-          }
-          return '.css'/* + p2 */;
-        }
-      };
-      if (presetScopeStyleIndex >= 0) {
-        let oldOptions = babelConfig.presets[presetScopeStyleIndex][1] || {};
-        if (isReactVueLike) {
-          if (!oldOptions.inject) oldOptions.inject = {};
-          oldOptions = oldOptions.inject;
-        }
-        const scopeNamespace = oldOptions.scopeNamespace || scopeStyleOptions.scopeNamespace;
-        Object.assign(oldOptions, scopeStyleOptions, { scopeNamespace });
+    };
+    if (presetScopeStyleIndex >= 0) {
+      let oldOptions = babelConfig.presets[presetScopeStyleIndex][1] || {};
+      if (isReactVueLike) {
+        if (!oldOptions.inject) oldOptions.inject = {};
+        oldOptions = oldOptions.inject;
+      }
+      const scopeNamespace = oldOptions.scopeNamespace || scopeStyleOptions.scopeNamespace;
+      Object.assign(oldOptions, scopeStyleOptions, { scopeNamespace });
+    } else {
+      presetScopeStyleIndex = presetEnvIndex >= 0
+        ? presetEnvIndex + 1
+        : Math.max(presetReactIndex - 1, 0);
+      let scopeStylePresetPath;
+      if (buildConfig.rainbow) {
+        scopeStylePresetPath = require.resolve('rainbow-core/preset');
+        scopeStyleOptions = { inject: scopeStyleOptions };
+      } else if (buildConfig.vuelike) {
+        scopeStylePresetPath = require.resolve('react-vue-like/preset');
+        scopeStyleOptions = { inject: scopeStyleOptions };
       } else {
-        presetScopeStyleIndex = presetEnvIndex >= 0
-          ? presetEnvIndex + 1
-          : Math.max(presetReactIndex - 1, 0);
-        let scopeStylePresetPath;
-        if (buildConfig.rainbow) {
-          scopeStylePresetPath = require.resolve('rainbow-core/preset');
-          scopeStyleOptions = { inject: scopeStyleOptions };
-        } else if (buildConfig.vuelike) {
-          scopeStylePresetPath = require.resolve('react-vue-like/preset');
-          scopeStyleOptions = { inject: scopeStyleOptions };
-        } else {
-          scopeStylePresetPath = require.resolve('babel-preset-react-scope-style');
-        }
-        babelConfig.presets.splice(presetScopeStyleIndex, 0, [scopeStylePresetPath, scopeStyleOptions]);
+        scopeStylePresetPath = require.resolve('babel-preset-react-scope-style');
       }
+      babelConfig.presets.splice(presetScopeStyleIndex, 0, [scopeStylePresetPath, scopeStyleOptions]);
     }
 
     if (buildConfig.alias) {

@@ -1459,10 +1459,10 @@ babel-plugin-transform-modules@^0.1.1:
     lodash.kebabcase "^4.1.1"
     lodash.snakecase "^4.1.1"
 
-babel-preset-react-scope-style@^0.0.10:
-  version "0.0.10"
-  resolved "https://registry.npmjs.org/babel-preset-react-scope-style/-/babel-preset-react-scope-style-0.0.10.tgz#0f10eb3b582321ed4d36b625a9e03fda95262a96"
-  integrity sha512-wBC7vRgDH8h/SSqgO/3omWIWWMO5M9JVM2k0VF5SPcnhjWUabUAo9EOKrsDUnTbUBZ2lptbFK2mlQVjGapxInw==
+babel-preset-react-scope-style@^0.0.11:
+  version "0.0.11"
+  resolved "https://registry.npmjs.org/babel-preset-react-scope-style/-/babel-preset-react-scope-style-0.0.11.tgz#b6a7a9c234e557031d9fd9d05c736dce71a4e381"
+  integrity sha512-aYAku+V4rTD5Op+/h7s602JNCGlIJxIZOawGgwZ1o5US4OwOgyP0akz2u/bICGV5VzLxfth9iQwntoQpYwx5+w==
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
     "@babel/plugin-syntax-jsx" "^7.12.1"
@@ -1610,10 +1610,10 @@ buffer-from@^1.0.0:
   resolved "http://npm.dc.servyou-it.com/buffer-from/-/buffer-from-1.1.2.tgz#2b146a6fd72e80b4f55d255f35ed59a3a9a41bd5"
   integrity sha1-KxRqb9cugLT1XSVfNe1Zo6mkG9U=
 
-build-esm-project@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.npmjs.org/build-esm-project/-/build-esm-project-0.1.0.tgz#715c40868b3ffcea24e7f802c7c9c43a4d1d7735"
-  integrity sha512-HJeFh8ZX/uP/xHLLcgUvReCKlGrpLpkIw+TaqeH3c7S/qlN00Lw0uatoWTv9UkqUWUJKzglP2ajnWYT/YnjK3A==
+build-esm-project@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.npmjs.org/build-esm-project/-/build-esm-project-0.1.1.tgz#20e43afce4f603060ce6bf96a21012c9d1943faf"
+  integrity sha512-2iZwSMhdodQe+2PiPEh9M5KwsQvf4Ws9s/7CjT9qg7/zvf0pvnURbYuR3g//z9xOH5Sjpi5NSA0Vs2UJCIuTyQ==
   dependencies:
     chalk "^4.1.2"
     commander "^8.3.0"
